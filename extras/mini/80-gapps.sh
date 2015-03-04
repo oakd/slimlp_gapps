@@ -17,7 +17,6 @@ app/Hangouts/lib/arm/libcrashreporter.so
 app/Hangouts/lib/arm/libcronet.so
 app/Hangouts/lib/arm/libframesequence.so
 app/Hangouts/lib/arm/libvideochat_jni.so
-app/HangoutsDialer/HangoutsDialer.apk
 etc/g.prop
 etc/permissions/com.google.android.camera2.xml
 etc/permissions/com.google.android.dialer.support.xml

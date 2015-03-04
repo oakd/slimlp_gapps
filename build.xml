@@ -52,7 +52,7 @@
   <!-- complete build                                                        -->
   <!--=======================================================================-->
   <target name="buildAll"
-        depends="cleanupBefore,initit,buildMini,buildNormal,buildFull,cleanupAfter"
+        depends="cleanupBefore,initit,buildMini,cleanupAfter"
           description="execute complete build">
   </target>
 
@@ -71,26 +71,6 @@
     <!-- copy files -->
     <copy todir="${work.dir}">
         <fileset dir="${structure.dir}">
-          <exclude name="system/app/CalendarGoogle/**"/>
-          <exclude name="system/app/Chrome/**"/>
-          <exclude name="system/app/Drive/**"/>
-          <exclude name="system/app/GenieWidget/**"/>
-          <exclude name="system/app/GoogleHome/**"/>
-          <exclude name="system/app/GoogleTTS/**"/>
-          <exclude name="system/app/Keep/**"/>
-          <exclude name="system/app/Keyboard/**"/>
-          <exclude name="system/app/Maps/**"/>
-          <exclude name="system/app/Messenger/**"/>
-          <exclude name="system/app/Music2/**"/>
-          <exclude name="system/app/PlusOne/**"/>
-          <exclude name="system/app/Street/**"/>
-          <exclude name="system/app/Translate/**"/>
-          <exclude name="system/app/Wallet/**"/>
-          <exclude name="system/app/YouTube/**"/>
-          <exclude name="system/priv-app/Velvet/**"/>
-          <exclude name="system/tts/**"/>
-          <exclude name="system/usr/**"/>
-          <exclude name="system/vendor/**"/>
         </fileset>
     </copy>
     <copy file="${app.dir}/extras/mini/updater-script"  todir="${work.dir}/META-INF/com/google/android"/>
@@ -106,75 +86,6 @@
       <arg value="${file.name.mini}"/>
     </java>
 
-  </target>
-
-  <!--=======================================================================-->
-  <!-- normal                                                                -->
-  <!--=======================================================================-->
-  <target name="buildNormal"
-          description="execute normal gapps build">
-    <!-- preparations -->
-    <property environment="env"/>
-    <property name="file.name.normal" value="${build.dir}/Slim_normal_gapps.BETA.${PRODUCT_VERSION_MAJOR}.${PRODUCT_VERSION_MINOR}.${PRODUCT_VERSION_MAINTENANCE}-${build.today}.zip"/>
-    <delete dir="${work.dir}"/>
-    <propertyfile file="${build.dir}/gapps.filenames">
-      <entry  key="normalfilename" value="${file.name.normal}"/>
-    </propertyfile>
-    <!-- copy files -->
-    <copy todir="${work.dir}">
-      <fileset dir="${structure.dir}">
-          <exclude name="system/app/CalendarGoogle/**"/>
-          <exclude name="system/app/Chrome/**"/>
-          <exclude name="system/app/Drive/**"/>
-          <exclude name="system/app/Keep/**"/>
-          <exclude name="system/app/Maps/**"/>
-          <exclude name="system/app/Messenger/**"/>
-          <exclude name="system/app/PlusOne/**"/>
-          <exclude name="system/app/Street/**"/>
-          <exclude name="system/app/Translate/**"/>
-          <exclude name="system/app/Wallet/**"/>
-      </fileset>
-    </copy>
-    <copy file="${app.dir}/extras/normal/updater-script"  todir="${work.dir}/META-INF/com/google/android"/>
-    <copy file="${app.dir}/extras/normal/80-gapps.sh" todir="${work.dir}/system/addon.d"/>
-
-    <!-- zip and sign it -->
-    <zip destfile="${build.dir}/unsigned.zip" basedir="${work.dir}"></zip>
-    <echo message="Signing gapps"/>
-    <java dir="${build.dir}" fork="true" failonerror="true" maxmemory="128m" jar="${sign.jar}">
-      <arg value="${sign.pem}"/>
-      <arg value="${sign.pk8}"/>
-      <arg value="${build.dir}/unsigned.zip"/>
-      <arg value="${file.name.normal}"/>
-    </java>
-  </target>
-  
-  <!--=======================================================================-->
-  <!-- full                                                               -->
-  <!--=======================================================================-->
-  <target name="buildFull"
-          description="execute full gapps build">
-    <!-- preparations -->
-    <property environment="env"/>
-    <property name="file.name.full" value="${build.dir}/Slim_full_gapps.BETA.${PRODUCT_VERSION_MAJOR}.${PRODUCT_VERSION_MINOR}.${PRODUCT_VERSION_MAINTENANCE}-${build.today}.zip"/>
-    <delete dir="${work.dir}"/>
-    <propertyfile file="${build.dir}/gapps.filenames">
-      <entry  key="fullfilename" value="${file.name.full}"/>
-    </propertyfile>
-    <!-- copy files -->
-    <copy todir="${work.dir}"><fileset dir="${structure.dir}"/></copy>
-    <copy file="${app.dir}/extras/full/updater-script"  todir="${work.dir}/META-INF/com/google/android"/>
-    <copy file="${app.dir}/extras/full/80-gapps.sh" todir="${work.dir}/system/addon.d"/>
-
-    <!-- zip and sign it -->
-    <zip destfile="${build.dir}/unsigned.zip" basedir="${work.dir}"></zip>
-    <echo message="Signing gapps"/>
-    <java dir="${build.dir}" fork="true" failonerror="true" maxmemory="128m" jar="${sign.jar}">
-      <arg value="${sign.pem}"/>
-      <arg value="${sign.pk8}"/>
-      <arg value="${build.dir}/unsigned.zip"/>
-      <arg value="${file.name.full}"/>
-    </java>
   </target>
 
   <!--=======================================================================-->
